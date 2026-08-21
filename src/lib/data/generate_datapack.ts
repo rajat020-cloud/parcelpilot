@@ -7,12 +7,20 @@ const DOCS_DIR = path.join(DATA_PACK_DIR, 'documents');
 export const SNAPSHOT_TIMESTAMP = '2026-08-20T12:00:00Z';
 
 export function ensureDirectoriesExist() {
-  if (!fs.existsSync(DATA_PACK_DIR)) {
-    fs.mkdirSync(DATA_PACK_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(DOCS_DIR)) {
-    fs.mkdirSync(DOCS_DIR, { recursive: true });
-  }
+  try {
+    if (!fs.existsSync(DATA_PACK_DIR)) {
+      fs.mkdirSync(DATA_PACK_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(DOCS_DIR)) {
+      fs.mkdirSync(DOCS_DIR, { recursive: true });
+    }
+  } catch (e) {}
+}
+
+function safeWriteFile(filePath: string, content: string) {
+  try {
+    fs.writeFileSync(filePath, content, 'utf-8');
+  } catch (e) {}
 }
 
 export function generateAllDataFiles() {
@@ -39,8 +47,8 @@ ParcelPilot provides support response time SLAs based on customer account tier:
 - Shipments experiencing verified carrier-fault pickup or delivery delays exceeding 4 hours are eligible for a standard 10% service credit of total order value.
 - Claims must be submitted within 30 days of shipment booking.
 `;
-  fs.writeFileSync(path.join(DOCS_DIR, '01_Support_Policy_v3_CURRENT.pdf'), doc1, 'utf-8');
-  fs.writeFileSync(path.join(DOCS_DIR, '01_Support_Policy_v3_CURRENT.txt'), doc1, 'utf-8');
+  safeWriteFile(path.join(DOCS_DIR, '01_Support_Policy_v3_CURRENT.pdf'), doc1);
+  safeWriteFile(path.join(DOCS_DIR, '01_Support_Policy_v3_CURRENT.txt'), doc1);
 
   const doc2 = `PARCELPILOT GLOBAL SUPPORT POLICY v2 (DEPRECATED)
 Document ID: DOC-POL-V2
@@ -60,8 +68,8 @@ NOTICE: THIS POLICY VERSION IS DEPRECATED AND NO LONGER IN EFFECT.
 3. DEPRECATED SERVICE CREDITS
 - No service credits permitted for delays under 8 hours.
 `;
-  fs.writeFileSync(path.join(DOCS_DIR, '02_Support_Policy_v2_DEPRECATED.pdf'), doc2, 'utf-8');
-  fs.writeFileSync(path.join(DOCS_DIR, '02_Support_Policy_v2_DEPRECATED.txt'), doc2, 'utf-8');
+  safeWriteFile(path.join(DOCS_DIR, '02_Support_Policy_v2_DEPRECATED.pdf'), doc2);
+  safeWriteFile(path.join(DOCS_DIR, '02_Support_Policy_v2_DEPRECATED.txt'), doc2);
 
   const doc3 = `PARCELPILOT CANCELLATION AND SERVICE CREDIT SOP v4
 Document ID: DOC-SOP-V4
@@ -82,8 +90,8 @@ a) Carrier fault pickup delay exceeds 5 hours.
 b) Total order value exceeds $5,000.
 c) Customer requests an exception to general policy or custom agreement interpretation.
 `;
-  fs.writeFileSync(path.join(DOCS_DIR, '03_Cancellation_and_Service_Credit_SOP_v4.pdf'), doc3, 'utf-8');
-  fs.writeFileSync(path.join(DOCS_DIR, '03_Cancellation_and_Service_Credit_SOP_v4.txt'), doc3, 'utf-8');
+  safeWriteFile(path.join(DOCS_DIR, '03_Cancellation_and_Service_Credit_SOP_v4.pdf'), doc3);
+  safeWriteFile(path.join(DOCS_DIR, '03_Cancellation_and_Service_Credit_SOP_v4.txt'), doc3);
 
   const doc4 = `PARCELPILOT PRODUCT OPERATIONS GUIDE AND KNOWN ISSUES
 Document ID: DOC-PRD-V1
@@ -105,8 +113,8 @@ Workaround: Regenerate label individually in single-order view.
 Bug Code: ERR-SCH-301
 Description: Automated carrier pickup dispatch failure during peak dispatch window (14:00-16:00 UTC).
 `;
-  fs.writeFileSync(path.join(DOCS_DIR, '04_Product_Operations_Guide_and_Known_Issues.pdf'), doc4, 'utf-8');
-  fs.writeFileSync(path.join(DOCS_DIR, '04_Product_Operations_Guide_and_Known_Issues.txt'), doc4, 'utf-8');
+  safeWriteFile(path.join(DOCS_DIR, '04_Product_Operations_Guide_and_Known_Issues.pdf'), doc4);
+  safeWriteFile(path.join(DOCS_DIR, '04_Product_Operations_Guide_and_Known_Issues.txt'), doc4);
 
   const doc5 = `NORTHSTAR LOGISTICS ENTERPRISE MASTER SERVICES AGREEMENT
 Document ID: DOC-AGR-ACC1001
@@ -127,8 +135,8 @@ CONTRACTUAL OVERRIDES:
 3. ENHANCED SERVICE CREDIT OVERRIDE (Section 6.1)
 - For any shipment pickup delay exceeding 2.0 hours caused by carrier fault, Northstar Logistics is entitled to a 25% service credit of total order value (overriding standard policy 10% and SOP 15%).
 `;
-  fs.writeFileSync(path.join(DOCS_DIR, '05_Northstar_Logistics_Enterprise_Agreement.pdf'), doc5, 'utf-8');
-  fs.writeFileSync(path.join(DOCS_DIR, '05_Northstar_Logistics_Enterprise_Agreement.txt'), doc5, 'utf-8');
+  safeWriteFile(path.join(DOCS_DIR, '05_Northstar_Logistics_Enterprise_Agreement.pdf'), doc5);
+  safeWriteFile(path.join(DOCS_DIR, '05_Northstar_Logistics_Enterprise_Agreement.txt'), doc5);
 
   const doc6 = `LUMENWORKS ENTERPRISE SERVICE AGREEMENT
 Document ID: DOC-AGR-ACC1002
@@ -146,19 +154,6 @@ CONTRACTUAL OVERRIDES:
 2. SERVICE CREDIT MULTIPLIER (Section 5.2)
 - Service credits for carrier delay qualify for a 1.5x credit multiplier on standard SOP rate (22.5% total order value credit for carrier delay >= 3.0h).
 `;
-  fs.writeFileSync(path.join(DOCS_DIR, '06_LumenWorks_Service_Agreement.pdf'), doc6, 'utf-8');
-  fs.writeFileSync(path.join(DOCS_DIR, '06_LumenWorks_Service_Agreement.txt'), doc6, 'utf-8');
-
-  try {
-    const XLSX = require('xlsx');
-    const workbook = XLSX.utils.book_new();
-
-    const readmeData = [{ Key: 'Dataset Snapshot Timestamp', Value: SNAPSHOT_TIMESTAMP }];
-    XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(readmeData), 'README');
-
-    const xlsxPath = path.join(DATA_PACK_DIR, 'ParcelPilot_Assessment_Data.xlsx');
-    XLSX.writeFile(workbook, xlsxPath);
-  } catch (e) {}
-
-  console.log(`Data pack directory prepared at ${DATA_PACK_DIR}`);
+  safeWriteFile(path.join(DOCS_DIR, '06_LumenWorks_Service_Agreement.pdf'), doc6);
+  safeWriteFile(path.join(DOCS_DIR, '06_LumenWorks_Service_Agreement.txt'), doc6);
 }

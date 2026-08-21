@@ -119,62 +119,76 @@ class ParcelPilotMemoryDB {
     ];
     tickets.forEach(t => this.ticketsMap.set(t.ticket_id, t));
 
-    const docsDir = path.join(process.cwd(), 'data_pack', 'documents');
-    if (fs.existsSync(docsDir)) {
-      const docFiles = fs.readdirSync(docsDir).filter(f => f.endsWith('.txt'));
+    const embeddedDocs: DocumentChunk[] = [
+      {
+        id: 'CHK-01',
+        doc_name: '01_Support_Policy_v3_CURRENT.pdf',
+        doc_type: 'POLICY',
+        status: 'CURRENT',
+        version: 'v3',
+        effective_date: '2026-01-01',
+        authority_rank: 2,
+        account_id: null,
+        content: `PARCELPILOT GLOBAL SUPPORT POLICY v3 (CURRENT)\nStatus: CURRENT ACTIVE\nAuthority Rank: 2\n1. SLAs: Enterprise Tier 2-hour SLA for high priority. Premium Tier 4-hour SLA. Standard Tier 12-hour SLA.\n2. Cancellation Fees: Orders cancelled >24 hours prior to pickup incur 0% cancellation fee. Orders cancelled <24 hours prior to pickup incur standard 15% cancellation fee unless overridden by enterprise contract. Orders cancelled post-dispatch incur 50% fee.\n3. Service Credits: Verified carrier-fault delay >4h qualifies for 10% credit.`,
+      },
+      {
+        id: 'CHK-02',
+        doc_name: '02_Support_Policy_v2_DEPRECATED.pdf',
+        doc_type: 'POLICY',
+        status: 'DEPRECATED',
+        version: 'v2',
+        effective_date: '2024-01-01',
+        authority_rank: 5,
+        account_id: null,
+        content: `PARCELPILOT GLOBAL SUPPORT POLICY v2 (DEPRECATED)\nStatus: DEPRECATED\nAuthority Rank: 5\n1. Flat 25% cancellation fee applied to all order cancellations regardless of notice period.\n2. No service credits permitted for delays under 8 hours.`,
+      },
+      {
+        id: 'CHK-03',
+        doc_name: '03_Cancellation_and_Service_Credit_SOP_v4.pdf',
+        doc_type: 'SOP',
+        status: 'CURRENT',
+        version: 'v4',
+        effective_date: '2026-02-15',
+        authority_rank: 3,
+        account_id: null,
+        content: `PARCELPILOT CANCELLATION AND SERVICE CREDIT SOP v4\nStatus: CURRENT SOP\nAuthority Rank: 3\nSPECIAL CARRIER FAULT PICKUP DELAY RULE (3-HOUR RULE): If pickup is delayed >= 3 hours due to carrier fault, customer qualifies for an immediate 15% service credit on total order value. Escalation required if delay > 5h or order value > $5,000.`,
+      },
+      {
+        id: 'CHK-04',
+        doc_name: '04_Product_Operations_Guide_and_Known_Issues.pdf',
+        doc_type: 'PRODUCT_DOC',
+        status: 'CURRENT',
+        version: 'v1',
+        effective_date: '2026-03-01',
+        authority_rank: 4,
+        account_id: null,
+        content: `PARCELPILOT PRODUCT OPERATIONS GUIDE AND KNOWN ISSUES\nAuthority Rank: 4\nBug Code: ERR-API-502 - Carrier API status sync latency affecting FedEx and DHL tracking feeds. Workaround: verify carrier portal directly. 0% cancellation fee applies if cancellation requested due to un-synced status.`,
+      },
+      {
+        id: 'CHK-05',
+        doc_name: '05_Northstar_Logistics_Enterprise_Agreement.pdf',
+        doc_type: 'AGREEMENT',
+        status: 'CURRENT',
+        version: 'v1',
+        effective_date: '2025-06-01',
+        authority_rank: 1,
+        account_id: 'ACC-1001',
+        content: `NORTHSTAR LOGISTICS ENTERPRISE MASTER SERVICES AGREEMENT\nAccount ID: ACC-1001\nAuthority Rank: 1 (Highest Authority - Customer Contract Override)\nSection 4.2 CANCELLATION FEE OVERRIDE: Northstar Logistics shall incur ZERO (0%) CANCELLATION FEE for any order cancelled prior to physical carrier pickup or with at least 12 hours notice prior to scheduled pickup. Section 6.1: Pickup delay > 2 hours carrier fault qualifies Northstar for 25% credit.`,
+      },
+      {
+        id: 'CHK-06',
+        doc_name: '06_LumenWorks_Service_Agreement.pdf',
+        doc_type: 'AGREEMENT',
+        status: 'CURRENT',
+        version: 'v1',
+        effective_date: '2025-09-01',
+        authority_rank: 1,
+        account_id: 'ACC-1002',
+        content: `LUMENWORKS ENTERPRISE SERVICE AGREEMENT\nAccount ID: ACC-1002\nAuthority Rank: 1 (Highest Authority - Customer Contract Override)\nSection 3.4 TECHNICAL FAULT CANCELLATION: 0% cancellation fee if requested due to platform bugs (ERR-API-502). Section 5.2 SERVICE CREDIT MULTIPLIER: 1.5x credit multiplier on standard SOP rate (22.5% total order value credit for carrier delay >= 3.0h).`,
+      },
+    ];
 
-      for (const file of docFiles) {
-        const fullPath = path.join(docsDir, file);
-        const content = fs.readFileSync(fullPath, 'utf-8');
-
-        let doc_type: 'POLICY' | 'SOP' | 'AGREEMENT' | 'PRODUCT_DOC' | 'TICKET' = 'POLICY';
-        let status: 'CURRENT' | 'DEPRECATED' = 'CURRENT';
-        let version = 'v3';
-        let effective_date = '2026-01-01';
-        let authority_rank = 2;
-        let account_id: string | null = null;
-
-        if (file.includes('DEPRECATED')) {
-          status = 'DEPRECATED';
-          version = 'v2';
-          authority_rank = 5;
-          effective_date = '2024-01-01';
-        } else if (file.includes('SOP')) {
-          doc_type = 'SOP';
-          version = 'v4';
-          authority_rank = 3;
-          effective_date = '2026-02-15';
-        } else if (file.includes('Known_Issues')) {
-          doc_type = 'PRODUCT_DOC';
-          version = 'v1';
-          authority_rank = 4;
-          effective_date = '2026-03-01';
-        } else if (file.includes('Northstar')) {
-          doc_type = 'AGREEMENT';
-          account_id = 'ACC-1001';
-          authority_rank = 1;
-          effective_date = '2025-06-01';
-        } else if (file.includes('LumenWorks')) {
-          doc_type = 'AGREEMENT';
-          account_id = 'ACC-1002';
-          authority_rank = 1;
-          effective_date = '2025-09-01';
-        }
-
-        const chunk: DocumentChunk = {
-          id: `CHK-${file}`,
-          doc_name: file,
-          doc_type,
-          status,
-          version,
-          effective_date,
-          authority_rank,
-          account_id,
-          content,
-        };
-        this.chunksMap.set(chunk.id, chunk);
-      }
-    }
+    embeddedDocs.forEach(chunk => this.chunksMap.set(chunk.id, chunk));
   }
 
   public getAccount(accountId: string): Account | undefined {
