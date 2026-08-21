@@ -1,0 +1,19 @@
+PARCELPILOT PRODUCT OPERATIONS GUIDE AND KNOWN ISSUES
+Document ID: DOC-PRD-V1
+Status: CURRENT PRODUCT DOC
+Effective Date: 2026-03-01
+Authority Rank: 4 (Technical Documentation)
+
+1. KNOWN SYSTEM ISSUES & BUG CODES
+
+Bug Code: ERR-API-502
+Description: Carrier API status sync latency affecting FedEx and DHL integration feeds.
+Impact: Order tracking updates may lag up to 6 hours behind physical shipment events.
+Workaround: Manually verify carrier tracking portal directly. 0% cancellation fee applies if cancellation requested due to un-synced status.
+
+Bug Code: ERR-LBL-409
+Description: PDF barcode rendering failure during batch label generation.
+Workaround: Regenerate label individually in single-order view.
+
+Bug Code: ERR-SCH-301
+Description: Automated carrier pickup dispatch failure during peak dispatch window (14:00-16:00 UTC).

@@ -1,0 +1,15 @@
+LUMENWORKS ENTERPRISE SERVICE AGREEMENT
+Document ID: DOC-AGR-ACC1002
+Account ID: ACC-1002
+Status: CURRENT ACTIVE CONTRACT
+Effective Date: 2025-09-01
+Expiration Date: 2026-09-01
+Authority Rank: 1 (Highest Authority - Customer Contract Override)
+
+CONTRACTUAL OVERRIDES:
+
+1. TECHNICAL FAULT CANCELLATION (Section 3.4)
+- LumenWorks incurs 0% cancellation fee if cancellation is requested due to platform technical bugs (e.g. ERR-API-502 or ERR-LBL-409).
+
+2. SERVICE CREDIT MULTIPLIER (Section 5.2)
+- Service credits for carrier delay qualify for a 1.5x credit multiplier on standard SOP rate (22.5% total order value credit for carrier delay >= 3.0h).

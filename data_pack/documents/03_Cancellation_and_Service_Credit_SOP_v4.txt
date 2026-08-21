@@ -1,0 +1,18 @@
+PARCELPILOT CANCELLATION AND SERVICE CREDIT SOP v4
+Document ID: DOC-SOP-V4
+Status: CURRENT SOP
+Effective Date: 2026-02-15
+Authority Rank: 3 (Operational Procedure)
+
+1. PURPOSE & SCOPE
+This Standard Operating Procedure (SOP) outlines step-by-step instructions for support agents evaluating cancellation fee waivers and service credit requests.
+
+2. SPECIAL CARRIER FAULT PICKUP DELAY RULE (3-HOUR RULE)
+- If a scheduled pickup is delayed by 3 hours or more (delay_hours >= 3.0) due to verified carrier fault (carrier_fault = true), the customer qualifies for an immediate 15% service credit on the total order value.
+- Formula: Credit Amount = Order Value * 0.15.
+
+3. ESCALATION REQUIREMENTS
+Support agents must prepare a formal escalation card (requiring manager confirmation) under any of the following conditions:
+a) Carrier fault pickup delay exceeds 5 hours.
+b) Total order value exceeds $5,000.
+c) Customer requests an exception to general policy or custom agreement interpretation.

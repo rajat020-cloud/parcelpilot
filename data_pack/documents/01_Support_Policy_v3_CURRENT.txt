@@ -1,0 +1,20 @@
+PARCELPILOT GLOBAL SUPPORT POLICY v3 (CURRENT)
+Document ID: DOC-POL-V3
+Status: CURRENT ACTIVE
+Effective Date: 2026-01-01
+Authority Rank: 2 (General Standard Policy)
+
+1. SERVICE LEVEL AGREEMENTS (SLAs)
+ParcelPilot provides support response time SLAs based on customer account tier:
+- Enterprise Tier: 2-hour response SLA for high/urgent priority tickets.
+- Premium Tier: 4-hour response SLA for standard support tickets.
+- Standard Tier: 12-hour response SLA for routine inquiries.
+
+2. STANDARD CANCELLATION POLICY & FEES
+- Orders cancelled greater than 24 hours prior to scheduled pickup time incur 0% cancellation fee.
+- Orders cancelled less than 24 hours prior to scheduled pickup time incur a standard 15% cancellation fee based on total order value.
+- Orders cancelled after carrier dispatch or arrival at pickup location incur a 50% cancellation fee unless overridden by customer-specific enterprise contract.
+
+3. GENERAL SERVICE CREDITS
+- Shipments experiencing verified carrier-fault pickup or delivery delays exceeding 4 hours are eligible for a standard 10% service credit of total order value.
+- Claims must be submitted within 30 days of shipment booking.

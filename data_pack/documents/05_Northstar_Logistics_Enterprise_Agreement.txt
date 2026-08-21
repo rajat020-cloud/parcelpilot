@@ -1,0 +1,18 @@
+NORTHSTAR LOGISTICS ENTERPRISE MASTER SERVICES AGREEMENT
+Document ID: DOC-AGR-ACC1001
+Account ID: ACC-1001
+Status: CURRENT ACTIVE CONTRACT
+Effective Date: 2025-06-01
+Expiration Date: 2027-06-01
+Authority Rank: 1 (Highest Authority - Customer Contract Override)
+
+CONTRACTUAL OVERRIDES:
+
+1. DEDICATED SUPPORT SLA (Section 2.1)
+- Northstar Logistics is entitled to a guaranteed 1-hour response SLA for all tickets submitted.
+
+2. CANCELLATION FEE OVERRIDE (Section 4.2)
+- Notwithstanding ParcelPilot standard support policies or general cancellation fee structures, Northstar Logistics shall incur ZERO (0%) CANCELLATION FEE for any order cancelled prior to physical carrier pickup or with at least 12 hours notice prior to scheduled pickup.
+
+3. ENHANCED SERVICE CREDIT OVERRIDE (Section 6.1)
+- For any shipment pickup delay exceeding 2.0 hours caused by carrier fault, Northstar Logistics is entitled to a 25% service credit of total order value (overriding standard policy 10% and SOP 15%).
